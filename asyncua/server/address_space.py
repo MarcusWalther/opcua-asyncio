@@ -99,6 +99,9 @@ class AttributeService:
                 ):
                     res.append(ua.StatusCode(ua.StatusCodes.BadUserAccessDenied))
                     continue
+            if not writevalue.Value.ServerTimestamp:
+                writevalue.Value.ServerTimestamp = datetime.utcnow()
+                writevalue.Value.SourceTimestamp = datetime.utcnow()
             res.append(
                 await self._aspace.write_attribute_value(writevalue.NodeId, writevalue.AttributeId, writevalue.Value)
             )
